@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["pim@lingewoud.nl"]
   spec.summary       = %q{Capistrano 3 Task to create a mysql database}
   spec.description   = %q{Capistrano 3 Task to create a mysql database. Useful for dev boxes}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/mipmip/capistrano-mysql_admin"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
