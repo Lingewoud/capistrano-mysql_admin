@@ -1,0 +1,59 @@
+# vim: ft=ruby:sts=2:expandtab
+
+set :mysql_exec_dir, '/usr/bin'
+
+set :mysql_admin_user, 'root'
+set :mysql_admin_password, ''
+set :mysql_admin_host, 'localhost'
+
+set :mysql_db_name, ''
+set :mysql_db_user, ''
+set :mysql_db_password, ''
+set :mysql_db_host, 'localhost'
+
+namespace :mysql_admin do
+
+  desc "create mysql user"
+  task :create_user do
+    mysql_pass_string = "-p'#{fetch(:mysql_admin_password)}'" unless fetch(:mysql_admin_password).chomp ==''
+    on roles(:all) do
+      execute "echo \"" \
+        "CREATE USER #{fetch(:mysql_db_user)}@localhost IDENTIFIED BY '#{fetch(:mysql_db_password)}';" \
+        "\" | #{fetch(:mysql_exec_dir)}/mysql #{fetch(mysql_pass_string)} -u#{fetch(:mysql_admin_user)} -h#{fetch(:mysql_admin_host)}"
+    end
+  end
+
+  desc "drop mysql user"
+  task :drop_user do
+    mysql_pass_string = "-p'#{fetch(:mysql_admin_password)}'" unless fetch(:mysql_admin_password).chomp ==''
+    on roles(:all) do
+      execute "echo \"" \
+        "DROP USER #{fetch(:mysql_db_user)}@localhost;" \
+        "\" | #{fetch(:mysql_exec_dir)}/mysql #{fetch(mysql_pass_string)} -u#{fetch(:mysql_admin_user)} -h#{fetch(:mysql_admin_host)}"
+    end
+  end
+
+  desc "create mysql database"
+  task :create_db do
+
+    mysql_pass_string = "-p'#{fetch(:mysql_admin_password)}'" unless fetch(:mysql_admin_password).chomp ==''
+
+    on roles(:all) do
+      execute "echo \"" \
+        "CREATE DATABASE #{fetch(:mysql_db_name)};" \
+        "GRANT ALL PRIVILEGES ON #{fetch(:mysql_db_name)}.* TO #{fetch(:mysql_db_user)};" \
+        "\" | #{fetch(:mysql_exec_dir)}/mysql #{fetch(mysql_pass_string)} -u#{fetch(:mysql_admin_user)} -h#{fetch(:mysql_admin_host)}"
+    end
+  end
+
+  desc "drop mysql database"
+  task :drop_db do
+    mysql_pass_string = "-p'#{fetch(:mysql_admin_password)}'" unless fetch(:mysql_admin_password).chomp ==''
+    on roles(:all) do
+      execute "echo \"" \
+        "DROP DATABASE #{fetch(:mysql_db_name)};" \
+        "\" | #{fetch(:mysql_exec_dir)}/mysql #{fetch(mysql_pass_string)} -u#{fetch(:mysql_admin_user)} -h#{fetch(:mysql_admin_host)}"
+    end
+  end
+
+end
