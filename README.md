@@ -1,14 +1,48 @@
 # Capistrano::MysqlAdmin
 
-TODO: Write a gem description
+This Capistrano 3 gem add's basic mysql admin tasks. Use this only on
+devboxes like your Mac or your Vagrant box. Capistrano::MysqlAdmin is not developed with
+security in mind.
+
+## Usage
+
+```bash
+cap mysql_admin:create_db                # create mysql database
+cap mysql_admin:create_user              # create mysql user
+cap mysql_admin:drop_db                  # drop mysql database
+cap mysql_admin:drop_user                # drop mysql user
+```
+
+## Configuration Variables
+
+Below all variables with their defaults:
+
+```ruby
+set :mysql_exec_dir, '/usr/bin'
+
+set :mysql_admin_user, 'root'
+set :mysql_admin_password, ''
+set :mysql_admin_host, 'localhost'
+
+set :mysql_db_name, ''
+set :mysql_db_user, ''
+set :mysql_db_password, ''
+set :mysql_db_host, 'localhost'
+```
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your Capistrano Gemfile:
 
 ```ruby
 gem 'capistrano-mysql_admin'
 ```
+
+Add this line to your Capfile:
+```ruby
+require 'capistrano/mysql_admin'
+```
+
 
 And then execute:
 
@@ -17,10 +51,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install capistrano-mysql_admin
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
